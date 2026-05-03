@@ -1,0 +1,102 @@
+<body>
+  <nav></nav>
+  <main>Brushes:</main>
+</body>
+
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
+<script>
+/* global nn */
+let x = 0
+
+// this function will save and download the content in 
+// our <main> element as an HTML file (local web page)
+function save () {
+  const doc = nn.get('main').innerHTML
+  const blob = new Blob([doc], { type: 'text/html' })
+  const url = URL.createObjectURL(blob)
+  const a = nn.create('a')
+    .set('href', url)
+    .set('download', 'web-drawing.html')
+    .addTo('nav')
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(url)
+}
+
+// this function will place a gif of a CD wherever
+// our mouse is when we click+drag on the page
+function draw () {
+  // if mouse is not (!) pressed down exit function
+  if (!nn.mouseDown) return
+  if (nn.mouseX < 420 && nn.mouseY < 120) return
+  // otherwise, create a new gif
+  const img = nn.create('img')
+  if (x === 0) {
+    img.set('src', 'https://netnet.studio/cd.gif')
+  } else if (x === 1) {
+    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery118/aa19cf89.gif')
+  } else if (x === 2) {
+    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery78/2980d662.gif')
+  } else if (x === 3) {
+    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery81/aefab3c2.gif')
+  } else if (x === 4) {
+    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery83/f983c7c9.gif')
+  } else {
+    return
+  }
+  img.positionOrigin('center')
+    .position(nn.mouseX, nn.mouseY)
+    .css('pointer-events', 'none')
+    .addTo('main')
+}
+  
+function erase () {
+  nn.get('main').content('Brushes:')
+}
+  
+// here we create our save button
+nn.create('button')
+  .content('save')
+  .addTo('nav')
+  .on('click', save)
+
+nn.create('button')
+  .content('Disc')
+  .addTo('nav')
+  .on('click', () => { x=0 })
+  .position(100, 30)
+  
+nn.create('button')
+  .content('Red')
+  .addTo('nav')
+  .on('click', () => { x=1 })
+  .position(150, 30)
+  
+nn.create('button')
+  .content('Orange')
+  .addTo('nav')
+  .on('click', () => { x=2 })
+  .position(200, 30)
+  
+nn.create('button')
+  .content('Blue')
+  .addTo('nav')
+  .on('click', () => { x=3 })
+  .position(275, 30)
+  
+nn.create('button')
+  .content('Purple')
+  .addTo('nav')
+  .on('click', () => { x=4 })
+  .position(327, 30)
+  
+nn.create('button')
+  .content('Clear')
+  .addTo('nav')
+  .on('click', erase)
+  .position(5,60)
+
+// here we setup our mouse move listener
+nn.on('mousemove', draw)
+
+</script>
