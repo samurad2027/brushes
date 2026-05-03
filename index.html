@@ -1,6 +1,8 @@
 <body>
   <nav></nav>
   <main>Brushes:</main>
+  <br>
+  <p>Connect the dots!</p>
 </body>
 
 <script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
@@ -8,8 +10,18 @@
 /* global nn */
 let x = 0
 
-// this function will save and download the content in 
-// our <main> element as an HTML file (local web page)
+// function to draw random dots
+function dot () {
+  let a = nn.random()
+  let b = nn.random()
+  while (a < 420 && b < 120){
+    a = nn.random()
+    b = nn.random()
+  }
+  
+}
+
+// this function will save and download the content
 function save () {
   const doc = nn.get('main').innerHTML
   const blob = new Blob([doc], { type: 'text/html' })
@@ -23,11 +35,11 @@ function save () {
   URL.revokeObjectURL(url)
 }
 
-// this function will place a gif of a CD wherever
-// our mouse is when we click+drag on the page
+// draw a gif depending on which button pressed
 function draw () {
   // if mouse is not (!) pressed down exit function
   if (!nn.mouseDown) return
+  // do not allow drawing over the buttons
   if (nn.mouseX < 420 && nn.mouseY < 120) return
   // otherwise, create a new gif
   const img = nn.create('img')
@@ -49,17 +61,19 @@ function draw () {
     .css('pointer-events', 'none')
     .addTo('main')
 }
-  
+
+// erases all drawn images
 function erase () {
   nn.get('main').content('Brushes:')
 }
   
-// here we create our save button
+// save button
 nn.create('button')
-  .content('save')
+  .content('Save')
   .addTo('nav')
   .on('click', save)
 
+// buttons to change brush
 nn.create('button')
   .content('Disc')
   .addTo('nav')
@@ -89,7 +103,8 @@ nn.create('button')
   .addTo('nav')
   .on('click', () => { x=4 })
   .position(327, 30)
-  
+
+// clear button
 nn.create('button')
   .content('Clear')
   .addTo('nav')
