@@ -12,14 +12,18 @@ let x = 0
 
 // function to draw random dots
 function dot () {
-  let a = nn.random()
-  let b = nn.random()
+  let a = nn.random(0, window.innerWidth - 50)
+  let b = nn.random(0, window.innerHeight - 50)
   while (a < 420 && b < 120){
-    a = nn.random()
-    b = nn.random()
+    a = nn.random(0, window.innerWidth - 50)
+    b = nn.random(0, window.innerHeight - 50)
   }
-  
+  nn.create('div')
+    .content('⚫️')
+    .position(a, b)
+    .addTo('main')
 }
+nn.times(25, dot)
 
 // this function will save and download the content
 function save () {
@@ -44,15 +48,15 @@ function draw () {
   // otherwise, create a new gif
   const img = nn.create('img')
   if (x === 0) {
-    img.set('src', 'https://netnet.studio/cd.gif')
+    img.set('src', 'https://netnet.studio/cd.gif').scale(0.3)
   } else if (x === 1) {
-    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery118/aa19cf89.gif')
+    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery118/aa19cf89.gif').scale(0.5)
   } else if (x === 2) {
-    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery78/2980d662.gif')
+    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery78/2980d662.gif').scale(0.8)
   } else if (x === 3) {
-    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery81/aefab3c2.gif')
+    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery81/aefab3c2.gif').scale(0.5)
   } else if (x === 4) {
-    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery83/f983c7c9.gif')
+    img.set('src', 'https://gifcity.carrd.co/assets/images/gallery83/f983c7c9.gif').scale(0.2)
   } else {
     return
   }
@@ -110,6 +114,14 @@ nn.create('button')
   .addTo('nav')
   .on('click', erase)
   .position(5,60)
+  
+// new dots button
+nn.create('button')
+  .content('New Dots')
+  .addTo('nav')
+  .on('click', erase)
+  .on('click', () => { nn.times(25, dot) })
+  .position(70,60)
 
 // here we setup our mouse move listener
 nn.on('mousemove', draw)
